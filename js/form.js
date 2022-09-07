@@ -35,25 +35,17 @@ button.addEventListener("click", function(event){
     
     console.log(patient);
 
-    // Create a tr table element
-    var trPatient = createTrTag(patient);
-
     // Verify the patient parameters is correct
     var errors = patientValidator(patient); // The retutn will be an empty string if the patient is valid, and a string error message otherwise
 
-    console.log(errors)
+    console.log(errors);
 
     if(errors.length > 0) { // When is not valid
         showErrorMessages(errors);
         return; // Ends all of the function, and dont add the parameters of the form on the table
     }
 
-    // Now, we will put the tr (with all of the children) as a child of the table on HTML (tbody tag)
-
-    var table = document.querySelector("#tabela-pacientes");
-
-    table.appendChild(trPatient);
-
+    addPatientOnTable(patient); // Function to add the patient into the table
 
     // Clean the form fields before click the button
     form.reset();
@@ -63,16 +55,27 @@ button.addEventListener("click", function(event){
 
 });
 
+function addPatientOnTable(patient) { // Function to recieve the patient informationi and add into the table
+    // Create a tr table element
+    var trPatient = createTrTag(patient);
+
+     // Now, we will put the tr (with all of the children) as a child of the table on HTML (tbody tag)
+
+     var table = document.querySelector("#tabela-pacientes");
+
+     table.appendChild(trPatient);
+}
+
 // Function to obtain the patient information
 
 function obtainPatientFromForm(form) {
 
     // Object "patient" created with a lot of properties
     var patient = {
-        name : form.nome.value,
-        weight : form.peso.value,
-        height : form.altura.value,
-        fat : form.gordura.value,
+        nome : form.nome.value,
+        peso : form.peso.value,
+        altura : form.altura.value,
+        gordura : form.gordura.value,
         imc : calculatesImc(form.peso.value, form.altura.value),
     }
 
@@ -94,10 +97,10 @@ function createTrTag(patient) {
 
     // And create the "td" tag element for each element of the table (how a td child)
     // Atribute a corresponding class to the "td"s elements
-    var tdName = createTdTag(patient.name, "info-nome");
-    var tdWeight = createTdTag(patient.weight, "info-peso");
-    var tdHeight = createTdTag(patient.height, "info-altura");
-    var tdFat = createTdTag(patient.fat, "info-gordura");
+    var tdName = createTdTag(patient.nome, "info-nome");
+    var tdWeight = createTdTag(patient.peso, "info-peso");
+    var tdHeight = createTdTag(patient.altura, "info-altura");
+    var tdFat = createTdTag(patient.gordura, "info-gordura");
     var tdImc = createTdTag(patient.imc, "info-imc");
 
     // Now we need to defime td as a child of the tr using the function appendChild()
@@ -139,10 +142,10 @@ function createTdTag(patientData,className) {
 
     // Now we will define that the values inserted on the form go to the created table line on button click
 
-    tdName.textContent = patient.name;
-    tdWeight.textContent = patient.weight;
-    tdHeight.textContent = patient.height;
-    tdFat.textContent = patient.fat;
+    tdName.textContent = patient.nome;
+    tdWeight.textContent = patient.peso;
+    tdHeight.textContent = patient.altura;
+    tdFat.textContent = patient.gordura;
     tdImc.textContent = patient.imc;
     */
 
@@ -155,30 +158,30 @@ function patientValidator(patient) {
     var errors = [];
 
     // Validate the form fill
-    if (patient.name.length == 0) {
+    if (patient.nome.length == 0) {
         errors.push("Blank name");  
     }
 
-    if (patient.fat.length == 0) {
+    if (patient.gordura.length == 0) {
         errors.push("Blank fat");  
     }
 
-    if (patient.height.length == 0) {
+    if (patient.altura.length == 0) {
         errors.push("Blank height");  
     }
 
-    if (patient.weight.length == 0) {
+    if (patient.peso.length == 0) {
         errors.push("Blank weight");  
     }
 
-    if (validateWeight(patient.weight)) { // check if the weight is correct      
+    if (validateWeight(patient.peso)) { // check if the weight is correct      
     }
-    else if (patient.height.length != 0){
-        errors.push("Invalid weight: " + patient.weight);
+    else if (patient.altura.length != 0){
+        errors.push("Invalid weight: " + patient.peso);
     }
 
     // Or we can do the if this way:
-    if (!validateHeight(patient.height) && patient.height.length != 0) errors.push("Invalid height: " + patient.height);
+    if (!validateHeight(patient.altura) && patient.altura.length != 0) errors.push("Invalid height: " + patient.altura);
     // If the height is not correct
 
     return errors;
