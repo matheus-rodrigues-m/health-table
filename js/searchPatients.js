@@ -12,17 +12,32 @@ buttonAdd.addEventListener("click", function() {
     xhr.open("GET", "http://api-pacientes.herokuapp.com/pacientes"); // Request of the GET type for the  addres http://api-pacientes.herokuapp.com/pacientes
 
     xhr.addEventListener("load", function() { // After the request has loaded, we will print the responseText (the content of the API response)
-        // console.log(xhr.responseText);
-        var response = xhr.responseText;
+        
+        if (xhr.status == 200) { // 200 is the code of sucess submission
+            var ajaxError = document.querySelector("#ajaxError");
 
-        var patients = JSON.parse(response); // Parese the JSON file (API responseText) into a JavaScript object
-        console.log(patients);
+            ajaxError.classList.add("invisible");
 
-        // We need to walth the array of patients from the API response and add each patient as a parameter to the function
+            // console.log(xhr.responseText);
+            var response = xhr.responseText;
 
-        patients.forEach(function(patient) {
-            addPatientOnTable(patient)
-        });
+            var patients = JSON.parse(response); // Parese the JSON file (API responseText) into a JavaScript object
+            console.log(patients);
+
+            // We need to walth the array of patients from the API response and add each patient as a parameter to the function
+
+            patients.forEach(function(patient) { // For each patient
+                addPatientOnTable(patient) // We add on the table
+            });
+        }
+
+        else {
+            console.log(xhr.status);
+            console.log(xhr.statusText);
+            var ajaxError = document.querySelector("#ajaxError");
+
+            ajaxError.classList.remove("invisible");
+        }
     });
 
     xhr.send(); // Send the request
